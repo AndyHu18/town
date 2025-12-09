@@ -8,4 +8,11 @@ export const ENV = {
   forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
   adminPassword: process.env.ADMIN_PASSWORD ?? "admin123", // Default password for fallback
+
+  // Google OAuth
+  googleClientId: process.env.GOOGLE_CLIENT_ID || "",
+  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+
+  // Admin Configuration
+  adminEmail: process.env.ADMIN_EMAIL || "", // Email to automatically make admin
 };
