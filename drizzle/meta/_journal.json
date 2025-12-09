@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1764445565448,
+      "tag": "0000_yielding_genesis",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1764749583068,
+      "tag": "0001_real_purple_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1764751380201,
+      "tag": "0002_narrow_masque",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1764753037817,
+      "tag": "0003_simple_proemial_gods",
+      "breakpoints": true
+    }
+  ]
+}
