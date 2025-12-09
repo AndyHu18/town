@@ -173,7 +173,7 @@ export default function BackgroundMusic() {
                 key={track.url}
                 className={`text-white/80 focus:bg-primary/20 focus:text-primary cursor-pointer flex justify-between items-center ${currentTrack === track.url ? "text-primary bg-white/5" : ""
                   }`}
-                onClick={() => handleTrackSelect(track.url, track.name)}
+                onSelect={() => handleTrackSelect(track.url, track.name)}
               >
                 <span>{track.name}</span>
                 {currentTrack === track.url && <Check className="h-3 w-3" />}

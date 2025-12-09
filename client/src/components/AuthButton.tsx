@@ -94,7 +94,7 @@ export default function AuthButton() {
       <>
         <Button
           onClick={() => setShowLoginDialog(true)}
-          className="flex items-center gap-2 bg-gradient-to-r from-amber-400 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-white shadow-lg shadow-amber-500/20 transition-all duration-300 transform hover:scale-105"
+          className="flex items-center gap-2 bg-gradient-to-r from-amber-400 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-[#0B1221] shadow-lg shadow-amber-500/20 transition-all duration-300 transform hover:scale-105"
         >
           <UserCircle className="w-5 h-5" />
           <span className="font-bold tracking-wide">會員 / 管理登入</span>
