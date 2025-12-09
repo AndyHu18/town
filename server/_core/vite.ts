@@ -58,7 +58,12 @@ export function serveStatic(app: Express) {
     );
   }
 
-  app.use(express.static(distPath));
+  // Enable aggressive caching for static assets to improve performance (especially for video)
+  app.use(express.static(distPath, {
+    maxAge: "7d", // Cache for 7 days
+    etag: true,   // Keep ETag for revalidation if needed
+    lastModified: true
+  }));
 
   // fall through to index.html if the file doesn't exist
   app.use("*", (_req, res) => {
