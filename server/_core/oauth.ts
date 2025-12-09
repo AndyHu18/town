@@ -9,7 +9,26 @@ function getQueryParam(req: Request, key: string): string | undefined {
   return typeof value === "string" ? value : undefined;
 }
 
+import { ENV } from "./env";
+
 export function registerOAuthRoutes(app: Express) {
+  app.get("/api/oauth/login", (req: Request, res: Response) => {
+    // Determine the callback URL based on the request headers
+    const protocol = req.headers["x-forwarded-proto"] || "https";
+    const host = req.headers["x-forwarded-host"] || req.headers.host;
+    const callbackUrl = `${protocol}://${host}/api/oauth/callback`;
+    
+    // Encode the callback URL in the state parameter
+    const state = btoa(callbackUrl);
+    
+    // Construct the authorization URL
+    // Defaulting to manus.im if oAuthServerUrl is api.manus.im, or just using oAuthServerUrl
+    // Assuming the auth service handles /authorize
+    const authUrl = `${ENV.oAuthServerUrl}/authorize?client_id=${ENV.appId}&response_type=code&state=${state}&redirect_uri=${encodeURIComponent(callbackUrl)}`;
+    
+    res.redirect(authUrl);
+  });
+
   app.get("/api/oauth/callback", async (req: Request, res: Response) => {
     const code = getQueryParam(req, "code");
     const state = getQueryParam(req, "state");
