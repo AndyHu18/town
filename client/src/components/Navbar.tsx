@@ -50,10 +50,10 @@ export default function Navbar() {
   // Determine button color based on state
   const isHome = location === "/";
   const isTransparent = isHome && !isScrolled;
-  const buttonColorClass = isMobileMenuOpen 
-    ? "text-white" 
-    : isTransparent 
-      ? "text-white" 
+  const buttonColorClass = isMobileMenuOpen
+    ? "text-white"
+    : isTransparent
+      ? "text-white"
       : "text-primary";
 
   return (
@@ -69,9 +69,9 @@ export default function Navbar() {
         <div className="container mx-auto px-6 flex items-center justify-between">
           {/* Logo Section */}
           <Link href="/" className="group flex flex-col items-start relative z-50" title="返回首頁">
-            <div className="flex items-center gap-3 px-6 py-3 rounded-lg border-2 border-primary/40 bg-[#0B1221]/60 backdrop-blur-sm transition-all duration-500 hover:border-primary hover:bg-[#0B1221]/90 shadow-[0_0_20px_rgba(234,179,8,0.3)] hover:shadow-[0_0_40px_rgba(234,179,8,0.7)] hover:scale-[1.02] relative overflow-hidden">
+            <div className="flex items-center gap-3 px-6 py-3 rounded-lg border-2 border-primary/80 bg-[#0B1221]/80 backdrop-blur-sm transition-all duration-500 hover:border-primary hover:bg-[#0B1221]/95 shadow-[0_0_25px_rgba(234,179,8,0.5)] hover:shadow-[0_0_45px_rgba(234,179,8,0.8)] hover:scale-[1.02] relative overflow-hidden">
               {/* Animated glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
               <div className="relative overflow-hidden flex flex-col">
                 <div className="relative z-10">
                   <span className="text-2xl font-serif font-bold tracking-[0.15em] text-primary transition-all duration-500 block drop-shadow-[0_0_12px_rgba(234,179,8,0.8)] group-hover:drop-shadow-[0_0_25px_rgba(234,179,8,1)] group-hover:text-primary/95">
@@ -88,8 +88,8 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             {navLinks.map((link) => (
-              <Link 
-                key={link.name} 
+              <Link
+                key={link.name}
                 href={link.href}
                 className="relative group px-4 py-2"
               >
@@ -98,8 +98,8 @@ export default function Navbar() {
                   location === link.href
                     ? "text-primary font-semibold"
                     : isScrolled || !isHome
-                    ? "text-white/90 group-hover:text-primary"
-                    : "text-white/90 group-hover:text-white"
+                      ? "text-white/90 group-hover:text-primary"
+                      : "text-white/90 group-hover:text-white"
                 )}>
                   {link.name}
                 </span>
@@ -109,10 +109,10 @@ export default function Navbar() {
                 )} />
               </Link>
             ))}
-            
+
             <div className="pl-4 ml-2 border-l border-white/10 flex items-center gap-3">
               <AuthButton />
-              <BookingDialog 
+              <BookingDialog
                 trigger={
                   <Button
                     variant="outline"
@@ -151,16 +151,16 @@ export default function Navbar() {
       {createPortal(
         <>
           {/* Backdrop */}
-          <div 
+          <div
             className={cn(
               "fixed inset-0 z-[80] bg-black/40 backdrop-blur-[2px] transition-opacity duration-300 md:hidden",
               isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
             )}
             onClick={() => setIsMobileMenuOpen(false)}
           />
-          
+
           {/* Drawer Menu */}
-          <div 
+          <div
             className={cn(
               "fixed top-0 right-0 bottom-0 z-[90] w-[85vw] max-w-sm bg-[#0B1221]/95 backdrop-blur-md flex flex-col transition-transform duration-300 md:hidden shadow-2xl border-l border-white/5",
               isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
@@ -192,15 +192,15 @@ export default function Navbar() {
               </Link>
 
               {navLinks.map((link) => (
-                <Link 
-                  key={link.name} 
+                <Link
+                  key={link.name}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <div className={cn(
                     "group flex items-center justify-center py-4 rounded-sm transition-all duration-500 border-b border-white/5 relative overflow-hidden",
-                    location === link.href 
-                      ? "bg-white/5 border-primary/20" 
+                    location === link.href
+                      ? "bg-white/5 border-primary/20"
                       : "hover:bg-white/5 hover:border-primary/10"
                   )}>
                     <div className={cn(
@@ -209,8 +209,8 @@ export default function Navbar() {
                     )} />
                     <span className={cn(
                       "text-lg font-serif tracking-[0.2em] transition-all duration-500 relative z-10",
-                      location === link.href 
-                        ? "text-primary drop-shadow-[0_0_15px_rgba(234,179,8,0.8)] scale-105" 
+                      location === link.href
+                        ? "text-primary drop-shadow-[0_0_15px_rgba(234,179,8,0.8)] scale-105"
                         : "text-white/80 group-hover:text-primary group-hover:drop-shadow-[0_0_10px_rgba(234,179,8,0.4)]"
                     )}>
                       {link.name}
@@ -219,7 +219,7 @@ export default function Navbar() {
                 </Link>
               ))}
             </div>
-            
+
             {/* Bottom Actions */}
             <div className="mt-auto p-8 border-t border-white/10 space-y-4">
               <div className="flex justify-center">
