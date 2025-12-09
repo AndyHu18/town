@@ -1,6 +1,7 @@
+
 import { useState } from "react";
 import { Link } from "wouter";
-import { LogIn, LogOut, User, FileText, Shield, LayoutDashboard } from "lucide-react";
+import { LogIn, LogOut, User, FileText, Shield, LayoutDashboard, KeyRound, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -20,6 +21,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function AuthButton() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -50,7 +52,7 @@ export default function AuthButton() {
     fetch("/api/auth/logout", { method: "POST" });
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoggingIn(true);
 
@@ -64,7 +66,7 @@ export default function AuthButton() {
       const data = await res.json();
 
       if (res.ok) {
-        toast.success("登入成功");
+        toast.success("管理員登入成功");
         setShowLoginDialog(false);
         setPassword("");
         refetch();
@@ -79,43 +81,80 @@ export default function AuthButton() {
     }
   };
 
+  const handleMemberLoginPlaceholder = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast.info("會員系統即將開放註冊！", {
+      description: "目前僅開放管理員登入，敬請期待。",
+    });
+  };
+
   // Not logged in - show login button
   if (!user) {
     return (
       <>
         <Button
           onClick={() => setShowLoginDialog(true)}
-          variant="outline"
-          className="flex items-center gap-2 border-primary/50 hover:bg-primary text-white hover:text-[#0B1221] transition-all duration-300 group"
+          className="flex items-center gap-2 bg-gradient-to-r from-amber-400 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-white shadow-lg shadow-amber-500/20 transition-all duration-300 transform hover:scale-105"
         >
-          <LogIn className="w-4 h-4 group-hover:scale-110 transition-transform" />
-          <span className="font-medium">管理登入</span>
+          <UserCircle className="w-5 h-5" />
+          <span className="font-bold tracking-wide">會員 / 管理登入</span>
         </Button>
 
         <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
-          <DialogContent className="sm:max-w-md">
+          <DialogContent className="sm:max-w-md bg-white/95 backdrop-blur-xl">
             <DialogHeader>
-              <DialogTitle>管理員登入</DialogTitle>
-              <DialogDescription>
-                請輸入管理員密碼以進入後台
+              <DialogTitle className="text-xl text-center">歡迎回到 Fufu Villa</DialogTitle>
+              <DialogDescription className="text-center">
+                請選擇您的登入身分
               </DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="space-y-2">
-                <Input
-                  type="password"
-                  placeholder="請輸入密碼"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={isLoggingIn}
-                />
-              </div>
-              <div className="flex justify-end">
-                <Button type="submit" disabled={isLoggingIn}>
-                  {isLoggingIn ? "登入中..." : "登入"}
-                </Button>
-              </div>
-            </form>
+
+            <Tabs defaultValue="member" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-4">
+                <TabsTrigger value="member">會員登入</TabsTrigger>
+                <TabsTrigger value="admin">管理員</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="member">
+                <form onSubmit={handleMemberLoginPlaceholder} className="space-y-4 py-2">
+                  <div className="space-y-2">
+                    <Input
+                      type="email"
+                      placeholder="電子信箱 / 手機號碼"
+                      disabled
+                    />
+                    <Input
+                      type="password"
+                      placeholder="會員密碼"
+                      disabled
+                    />
+                  </div>
+                  <Button type="submit" className="w-full bg-slate-800 hover:bg-slate-700">
+                    登入 / 註冊
+                  </Button>
+                  <p className="text-xs text-center text-muted-foreground mt-2">
+                    * 會員系統升級維護中，暫停開放註冊
+                  </p>
+                </form>
+              </TabsContent>
+
+              <TabsContent value="admin">
+                <form onSubmit={handleAdminLogin} className="space-y-4 py-2">
+                  <div className="space-y-2">
+                    <Input
+                      type="password"
+                      placeholder="請輸入管理員密碼"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      disabled={isLoggingIn}
+                    />
+                  </div>
+                  <Button type="submit" className="w-full bg-amber-600 hover:bg-amber-700" disabled={isLoggingIn}>
+                    {isLoggingIn ? "驗證中..." : "確認登入"}
+                  </Button>
+                </form>
+              </TabsContent>
+            </Tabs>
           </DialogContent>
         </Dialog>
       </>
@@ -129,12 +168,12 @@ export default function AuthButton() {
         <Button
           variant="ghost"
           size="sm"
-          className="flex items-center gap-2 hover:bg-primary/10"
+          className="flex items-center gap-2 hover:bg-primary/10 border border-primary/20"
         >
-          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-            <User className="w-4 h-4 text-primary" />
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white shadow-sm">
+            <User className="w-4 h-4" />
           </div>
-          <span className="hidden md:inline text-sm font-medium">
+          <span className="hidden md:inline text-sm font-medium text-primary">
             {user.name || "管理員"}
           </span>
         </Button>
