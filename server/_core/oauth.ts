@@ -17,15 +17,15 @@ export function registerOAuthRoutes(app: Express) {
     const protocol = req.headers["x-forwarded-proto"] || "https";
     const host = req.headers["x-forwarded-host"] || req.headers.host;
     const callbackUrl = `${protocol}://${host}/api/oauth/callback`;
-    
+
     // Encode the callback URL in the state parameter
     const state = btoa(callbackUrl);
-    
+
     // Construct the authorization URL
     // Defaulting to manus.im if oAuthServerUrl is api.manus.im, or just using oAuthServerUrl
     // Assuming the auth service handles /authorize
     const authUrl = `${ENV.oAuthServerUrl}/authorize?client_id=${ENV.appId}&response_type=code&state=${state}&redirect_uri=${encodeURIComponent(callbackUrl)}`;
-    
+
     res.redirect(authUrl);
   });
 
@@ -68,5 +68,48 @@ export function registerOAuthRoutes(app: Express) {
       console.error("[OAuth] Callback failed", error);
       res.status(500).json({ error: "OAuth callback failed" });
     }
+  });
+
+  // Local password login
+  app.post("/api/auth/login", async (req: Request, res: Response) => {
+    const { password } = req.body;
+
+    if (password !== ENV.adminPassword) {
+      res.status(401).json({ error: "密碼錯誤" });
+      return;
+    }
+
+    try {
+      const adminOpenId = "admin-user";
+
+      // Ensure admin user exists in DB
+      await db.upsertUser({
+        openId: adminOpenId,
+        name: "Admin",
+        email: "admin@local",
+        loginMethod: "password",
+        lastSignedIn: new Date(),
+      });
+
+      // Create session
+      const sessionToken = await sdk.createSessionToken(adminOpenId, {
+        name: "Admin",
+        expiresInMs: ONE_YEAR_MS,
+      });
+
+      const cookieOptions = getSessionCookieOptions(req);
+      res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error("[Auth] Login failed", error);
+      res.status(500).json({ error: "Login failed" });
+    }
+  });
+
+  app.post("/api/auth/logout", async (req: Request, res: Response) => {
+    const cookieOptions = getSessionCookieOptions(req);
+    res.clearCookie(COOKIE_NAME, cookieOptions);
+    res.json({ success: true });
   });
 }
